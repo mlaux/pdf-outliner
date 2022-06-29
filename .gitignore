@@ -1,0 +1,7 @@
+html
+target
+.idea
+*.iml
+*.ipr
+.DS_Store
+
