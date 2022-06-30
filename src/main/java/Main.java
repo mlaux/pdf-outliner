@@ -116,9 +116,12 @@ public class Main {
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html><head><link rel=\"stylesheet\" href=\"style.css\"></head><body><ul>");
         for (Entry entry : entries) {
+            if (entry.funcName.isEmpty()) {
+                continue;
+            }
             sb.append("<li><a href=\"").append(entry.funcName).append(".html\" target=\"desc\">");
             sb.append(entry.funcName);
-            sb.append("</li>");
+            sb.append("</a></li>");
         }
         sb.append("</ul></body></html>");
         fos.write(sb.toString());
