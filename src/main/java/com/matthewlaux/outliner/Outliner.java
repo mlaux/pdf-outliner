@@ -4,7 +4,7 @@ import com.matthewlaux.outliner.model.DocEditor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.text.Document;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -21,6 +21,7 @@ public class Outliner {
     private static JTree tree;
     private static DocEditor editor;
     private static DefaultTreeModel treeModel;
+    private static JEditorPane preview;
 
     private static void createWindow() {
         JFrame frame = new JFrame(TITLE);
@@ -38,7 +39,12 @@ public class Outliner {
         tree = new JTree(editor.getRoot());
         treeModel = (DefaultTreeModel) tree.getModel();
         tree.setPreferredSize(new Dimension(250, 0));
-        mainPanel.add(tree, BorderLayout.EAST);
+        mainPanel.add(new JScrollPane(tree), BorderLayout.WEST);
+
+        preview = new JEditorPane();
+        preview.setPreferredSize(new Dimension(300, 0));
+        preview.setContentType("text/html");
+        mainPanel.add(new JScrollPane(preview), BorderLayout.EAST);
 
         frame.setContentPane(mainPanel);
         frame.pack();
@@ -57,10 +63,17 @@ public class Outliner {
         }
     }
 
-    private static void refreshTree() {
+    private static void refreshView() {
         treeModel.reload(editor.getRoot());
         expandTree();
         tree.setSelectionPath(editor.getCurrent().toTreePath());
+        if (editor.getCurrentPage() != null) {
+            preview.setText(editor.getCurrentPage().toHtml());
+
+            // scroll to bottom
+            Document doc = preview.getDocument();
+            preview.select(doc.getLength(), doc.getLength());
+        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -95,15 +108,15 @@ public class Outliner {
                         pagePanel.nextBlock();
                     }
             }
-            refreshTree();
+            refreshView();
         }
     }
 
     private static final Map<Integer, TextType> KEY_TYPE_MAP = new HashMap<>();
     static {
-        KEY_TYPE_MAP.put(KeyEvent.VK_C, TextType.Code);
+        KEY_TYPE_MAP.put(KeyEvent.VK_C, TextType.CodeBlock);
         KEY_TYPE_MAP.put(KeyEvent.VK_1, TextType.ParameterName);
         KEY_TYPE_MAP.put(KeyEvent.VK_2, TextType.ParameterDescription);
-        KEY_TYPE_MAP.put(KeyEvent.VK_T, TextType.Text);
+        KEY_TYPE_MAP.put(KeyEvent.VK_T, TextType.Paragraph);
     }
 }

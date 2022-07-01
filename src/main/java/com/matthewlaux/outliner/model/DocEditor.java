@@ -3,7 +3,7 @@ package com.matthewlaux.outliner.model;
 import com.matthewlaux.outliner.TextBlock;
 
 public class DocEditor {
-    private DocNode root;
+    private final DocNode root;
     private DocNode current;
 
     public DocEditor() {
@@ -17,6 +17,14 @@ public class DocEditor {
 
     public DocNode getCurrent() {
         return current;
+    }
+
+    public DocNode getCurrentPage() {
+        DocNode node = current;
+        while (node != null && !(node instanceof PageDocNode)) {
+            node = node.parent;
+        }
+        return node;
     }
 
     public void page(String title) {

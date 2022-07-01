@@ -12,4 +12,14 @@ class SectionDocNode extends DocNode {
     public String toString() {
         return "Section: " + title;
     }
+
+    @Override
+    public String toHtml() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<h2>").append(title).append("</h2>");
+        for (DocNode child : children) {
+            sb.append(child.toHtml());
+        }
+        return sb.toString();
+    }
 }

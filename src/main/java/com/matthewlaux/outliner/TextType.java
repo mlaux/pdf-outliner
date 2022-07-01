@@ -1,8 +1,14 @@
 package com.matthewlaux.outliner;
 
 public enum TextType {
-    Text, // regular body text
-    Code,
-    ParameterName,
-    ParameterDescription,
+    Paragraph("p"), // regular body text
+    CodeBlock("pre"),
+    ParameterName("code"),
+    ParameterDescription(null);
+
+    public final String htmlTag;
+
+    TextType(String htmlTag) {
+        this.htmlTag = htmlTag;
+    }
 }

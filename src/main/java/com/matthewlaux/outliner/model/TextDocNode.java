@@ -14,4 +14,9 @@ public class TextDocNode extends DocNode {
     public String toString() {
         return textBlock.text;
     }
+
+    @Override
+    public String toHtml() {
+        return textBlock.toHtml();
+    }
 }

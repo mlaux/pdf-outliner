@@ -34,6 +34,14 @@ public class DocNode implements TreeNode {
         return new TreePath(path.toArray(new DocNode[0]));
     }
 
+    public String toHtml() {
+        StringBuilder html = new StringBuilder();
+        for (DocNode child : children) {
+            html.append(child.toHtml());
+        }
+        return html.toString();
+    }
+
     @Override
     public String toString() {
         return String.format("<%d children>", children.size());

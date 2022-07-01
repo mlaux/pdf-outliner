@@ -16,4 +16,11 @@ public class TextBlock {
     public void setType(TextType type) {
         this.type = type;
     }
+
+    public String toHtml() {
+        if (type.htmlTag != null) {
+            return "<" + type.htmlTag + ">" + text + "</" + type.htmlTag + ">";
+        }
+        return text;
+    }
 }
