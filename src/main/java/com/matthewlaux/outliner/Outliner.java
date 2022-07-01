@@ -39,14 +39,6 @@ public class Outliner {
 
         editor = new DocEditor();
         tree = new JTree(editor.getRoot());
-        tree.setCellRenderer(new DefaultTreeCellRenderer() {
-            @Override
-            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-                Component comp = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-                setIcon(new ImageIcon(((DocNode) value).getIconName() + ".png"));
-                return comp;
-            }
-        });
         treeModel = (DefaultTreeModel) tree.getModel();
         tree.setPreferredSize(new Dimension(250, 0));
         mainPanel.add(new JScrollPane(tree), BorderLayout.WEST);

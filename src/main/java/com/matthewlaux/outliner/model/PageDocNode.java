@@ -14,11 +14,6 @@ class PageDocNode extends DocNode {
     }
 
     @Override
-    public String getIconName() {
-        return "document-globe";
-    }
-
-    @Override
     public String toHtml() {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><head><title>")

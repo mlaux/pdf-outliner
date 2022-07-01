@@ -20,8 +20,4 @@ public class TextDocNode extends DocNode {
         return textBlock.toHtml();
     }
 
-    @Override
-    public String getIconName() {
-        return textBlock.type.iconName;
-    }
 }
