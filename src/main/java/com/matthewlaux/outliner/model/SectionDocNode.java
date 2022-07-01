@@ -7,4 +7,9 @@ class SectionDocNode extends DocNode {
         super(parent);
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "Section: " + title;
+    }
 }

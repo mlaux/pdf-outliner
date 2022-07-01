@@ -11,6 +11,14 @@ public class DocEditor {
         current = root;
     }
 
+    public DocNode getRoot() {
+        return root;
+    }
+
+    public DocNode getCurrent() {
+        return current;
+    }
+
     public void page(String title) {
         PageDocNode page = new PageDocNode(current, title);
         current.addChild(page);

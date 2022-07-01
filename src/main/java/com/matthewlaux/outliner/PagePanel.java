@@ -68,12 +68,11 @@ class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
         goToPage(pageNumber - 1);
     }
 
-    public void nextBlock(TextType type) {
+    public void nextBlock() {
         if (blockIndex == blocks.size() - 1) {
             nextPage();
             return;
         }
-        blocks.get(blockIndex).type = type;
         blockIndex++;
         repaint();
     }
@@ -85,6 +84,10 @@ class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
         }
         blockIndex--;
         repaint();
+    }
+
+    public TextBlock getCurrentBlock() {
+        return blocks.get(blockIndex);
     }
 
     private void tryRender() {
