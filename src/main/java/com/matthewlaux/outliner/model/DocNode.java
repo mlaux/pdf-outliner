@@ -42,6 +42,10 @@ public class DocNode implements TreeNode {
         return html.toString();
     }
 
+    public String getIconName() {
+        return null;
+    }
+
     @Override
     public String toString() {
         return String.format("<%d children>", children.size());

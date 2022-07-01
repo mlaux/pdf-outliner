@@ -14,6 +14,11 @@ class SectionDocNode extends DocNode {
     }
 
     @Override
+    public String getIconName() {
+        return "edit-heading-1";
+    }
+
+    @Override
     public String toHtml() {
         StringBuilder sb = new StringBuilder();
         sb.append("<h2>").append(title).append("</h2>");

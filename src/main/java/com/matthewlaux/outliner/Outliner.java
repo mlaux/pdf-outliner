@@ -1,10 +1,12 @@
 package com.matthewlaux.outliner;
 
 import com.matthewlaux.outliner.model.DocEditor;
+import com.matthewlaux.outliner.model.DocNode;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.swing.*;
 import javax.swing.text.Document;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -37,6 +39,14 @@ public class Outliner {
 
         editor = new DocEditor();
         tree = new JTree(editor.getRoot());
+        tree.setCellRenderer(new DefaultTreeCellRenderer() {
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+                Component comp = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+                setIcon(new ImageIcon(((DocNode) value).getIconName() + ".png"));
+                return comp;
+            }
+        });
         treeModel = (DefaultTreeModel) tree.getModel();
         tree.setPreferredSize(new Dimension(250, 0));
         mainPanel.add(new JScrollPane(tree), BorderLayout.WEST);
