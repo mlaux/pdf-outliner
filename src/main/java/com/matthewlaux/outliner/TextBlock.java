@@ -18,9 +18,6 @@ public class TextBlock {
     }
 
     public String toHtml() {
-        if (type.htmlTag != null) {
-            return "<" + type.htmlTag + ">" + text + "</" + type.htmlTag + ">";
-        }
-        return text;
+        return type.htmlStart + text + type.htmlEnd;
     }
 }
