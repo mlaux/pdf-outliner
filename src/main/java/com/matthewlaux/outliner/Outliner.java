@@ -57,6 +57,12 @@ public class Outliner {
         }
     }
 
+    private static void refreshTree() {
+        treeModel.reload(editor.getRoot());
+        expandTree();
+        tree.setSelectionPath(editor.getCurrent().toTreePath());
+    }
+
     public static void main(String[] args) throws Exception {
         PDDocument document = PDDocument.load(new File("essentials.pdf"));
         renderer = new IMRenderer(document);
@@ -89,9 +95,7 @@ public class Outliner {
                         pagePanel.nextBlock();
                     }
             }
-            treeModel.reload(editor.getRoot());
-            expandTree();
-            tree.setSelectionPath(editor.getCurrent().toTreePath());
+            refreshTree();
         }
     }
 

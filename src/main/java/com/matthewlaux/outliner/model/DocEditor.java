@@ -20,14 +20,25 @@ public class DocEditor {
     }
 
     public void page(String title) {
-        PageDocNode page = new PageDocNode(current, title);
-        current.addChild(page);
+        // pages always go on the root
+        PageDocNode page = new PageDocNode(root, title);
+        root.addChild(page);
         current = page;
     }
 
     public void section(String title) {
-        SectionDocNode section = new SectionDocNode(current, title);
-        current.addChild(section);
+        if (current == root) {
+            return;
+        }
+
+        DocNode useParent;
+        if (current instanceof SectionDocNode) {
+            useParent = current.parent;
+        } else {
+            useParent = current;
+        }
+        SectionDocNode section = new SectionDocNode(useParent, title);
+        useParent.addChild(section);
         current = section;
     }
 
