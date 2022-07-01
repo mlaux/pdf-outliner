@@ -49,6 +49,7 @@ public class DocEditor {
     }
 
     public void text(TextBlock text) {
-        current.addText(text);
+        TextDocNode node = new TextDocNode(current, text);
+        current.addChild(node);
     }
 }

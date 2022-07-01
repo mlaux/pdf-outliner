@@ -9,7 +9,7 @@ import java.util.*;
 public class DocNode implements TreeNode {
     public final DocNode parent;
     public final List<DocNode> children = new ArrayList<>();
-    public final List<TextBlock> textBlocks = new ArrayList<>();
+    //public final List<TextBlock> textBlocks = new ArrayList<>();
 
     DocNode(DocNode parent) {
         this.parent = parent;
@@ -19,9 +19,9 @@ public class DocNode implements TreeNode {
         children.add(child);
     }
 
-    public void addText(TextBlock text) {
-        textBlocks.add(text);
-    }
+//    public void addText(TextBlock text) {
+//        textBlocks.add(text);
+//    }
 
     public TreePath toTreePath() {
         List<DocNode> path = new ArrayList<>();
