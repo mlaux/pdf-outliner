@@ -1,3 +1,5 @@
+package com.matthewlaux.outliner;
+
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.swing.*;
@@ -7,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
     private final PDFRenderer renderer;
@@ -54,17 +55,17 @@ class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
         repaint();
     }
 
-    public void setPageNumber(int pageNumber) {
+    public void goToPage(int pageNumber) {
         this.pageNumber = pageNumber;
         tryRender();
     }
 
     public void nextPage() {
-        setPageNumber(pageNumber + 1);
+        goToPage(pageNumber + 1);
     }
 
     public void previousPage() {
-        setPageNumber(pageNumber - 1);
+        goToPage(pageNumber - 1);
     }
 
     public void nextBlock(TextType type) {

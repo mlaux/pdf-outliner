@@ -1,34 +1,35 @@
+package com.matthewlaux.outliner;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-public class RenderTest {
+public class Outliner {
     private static final String TITLE = "PDF Outliner";
-    private static final int SPACING = 12;
 
     private static PagePanel pagePanel;
     private static IMRenderer renderer;
+    private static JTree tree;
 
     private static void createWindow() {
         JFrame frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        BorderLayout mainLayout = new BorderLayout(0, SPACING);
-        Border padding = BorderFactory.createEmptyBorder(SPACING, SPACING, SPACING, SPACING);
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(mainLayout);
-        mainPanel.setBorder(padding);
+        BorderLayout mainLayout = new BorderLayout(0, 0);
+        JPanel mainPanel = new JPanel(mainLayout);
 
         pagePanel = new PagePanel(renderer);
         renderer.setOnPageCompleteListener(pagePanel);
-        pagePanel.setPageNumber(430);
 
         mainPanel.add(pagePanel, BorderLayout.CENTER);
+
+        tree = new JTree();
+        tree.setPreferredSize(new Dimension(250, 0));
+        mainPanel.add(tree, BorderLayout.EAST);
 
         frame.setContentPane(mainPanel);
         frame.pack();
@@ -50,11 +51,13 @@ public class RenderTest {
                 }
             }
         });
+
+        pagePanel.goToPage(430);
     }
 
     public static void main(String[] args) throws Exception {
         PDDocument document = PDDocument.load(new File("essentials.pdf"));
         renderer = new IMRenderer(document);
-        SwingUtilities.invokeLater(RenderTest::createWindow);
+        SwingUtilities.invokeLater(Outliner::createWindow);
     }
 }

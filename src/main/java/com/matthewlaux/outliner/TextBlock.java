@@ -1,3 +1,5 @@
+package com.matthewlaux.outliner;
+
 import java.awt.geom.Rectangle2D;
 
 public class TextBlock {
