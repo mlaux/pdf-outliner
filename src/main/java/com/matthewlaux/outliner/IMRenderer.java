@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class IMRenderer extends PDFRenderer {
-    private OnPageCompleteListener onPageCompleteListener;
+    private PageListener pageListener;
 
     public IMRenderer(PDDocument document) {
         super(document);
@@ -18,14 +18,14 @@ public class IMRenderer extends PDFRenderer {
 
     @Override
     protected PageDrawer createPageDrawer(PageDrawerParameters parameters) throws IOException {
-        return new IMPageDrawer(parameters, onPageCompleteListener);
+        return new IMPageDrawer(parameters, pageListener, SettingsPanel.getSettings());
     }
 
-    public void setOnPageCompleteListener(OnPageCompleteListener onPageCompleteListener) {
-        this.onPageCompleteListener = onPageCompleteListener;
+    public void setPageListener(PageListener pageListener) {
+        this.pageListener = pageListener;
     }
 
-    interface OnPageCompleteListener {
+    interface PageListener {
         void onPageComplete(List<TextBlock> textBlocks, AffineTransform transform);
     }
 }

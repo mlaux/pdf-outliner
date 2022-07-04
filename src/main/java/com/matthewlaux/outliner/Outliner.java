@@ -1,12 +1,10 @@
 package com.matthewlaux.outliner;
 
 import com.matthewlaux.outliner.model.DocEditor;
-import com.matthewlaux.outliner.model.DocNode;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.swing.*;
 import javax.swing.text.Document;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -33,7 +31,7 @@ public class Outliner {
         JPanel mainPanel = new JPanel(mainLayout);
 
         pagePanel = new PagePanel(renderer);
-        renderer.setOnPageCompleteListener(pagePanel);
+        renderer.setPageListener(pagePanel);
 
         mainPanel.add(pagePanel, BorderLayout.CENTER);
 
@@ -47,6 +45,10 @@ public class Outliner {
         preview.setPreferredSize(new Dimension(300, 0));
         preview.setContentType("text/html");
         mainPanel.add(new JScrollPane(preview), BorderLayout.EAST);
+
+        SettingsPanel sp = new SettingsPanel();
+        sp.setSettingsChangeListener(pagePanel);
+        mainPanel.add(sp.getPanel(), BorderLayout.SOUTH);
 
         frame.setContentPane(mainPanel);
         frame.pack();

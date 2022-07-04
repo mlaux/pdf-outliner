@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
+class PagePanel extends JPanel implements IMRenderer.PageListener, SettingsPanel.SettingsChangeListener {
     private final PDFRenderer renderer;
     private int pageNumber;
     private List<TextBlock> blocks = new ArrayList<>();
@@ -35,7 +35,7 @@ class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
         g.setColor(new Color(255, 0, 0, 64));
         AffineTransform at = g.getTransform();
         g.setTransform(transform);
-        if (blocks.size() > 0) {
+        if (!blocks.isEmpty()) {
             g.fill(blocks.get(blockIndex).bounds);
         }
         g.setTransform(at);
@@ -48,11 +48,15 @@ class PagePanel extends JPanel implements IMRenderer.OnPageCompleteListener {
 
     @Override
     public void onPageComplete(List<TextBlock> blocks, AffineTransform transform) {
-        System.out.println("setBlocks");
         this.blocks = blocks;
         this.transform = transform;
         this.blockIndex = 0;
         repaint();
+    }
+
+    @Override
+    public void onSettingsChange(SettingsPanel.Settings settings) {
+        tryRender();
     }
 
     public void goToPage(int pageNumber) {

@@ -18,19 +18,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IMPageDrawer extends PageDrawer {
-    private static final int LINE_DISTANCE_THRESHOLD = 26;
     private static final byte[] tempch = new byte[1];
+
+    private final IMRenderer.PageListener pageListener;
 
     private Rectangle2D lastBBox;
     private Rectangle2D wholeBBox;
     private String wholeText = "";
     private PDFont lastFont;
-    private IMRenderer.OnPageCompleteListener onPageCompleteListener;
     private List<TextBlock> blocks = new ArrayList<>();
 
-    public IMPageDrawer(PageDrawerParameters parameters, IMRenderer.OnPageCompleteListener onPageCompleteListener) throws IOException {
+    private SettingsPanel.Settings settings;
+
+    public IMPageDrawer(PageDrawerParameters parameters, IMRenderer.PageListener pageListener, SettingsPanel.Settings settings) throws IOException {
         super(parameters);
-        this.onPageCompleteListener = onPageCompleteListener;
+        this.pageListener = pageListener;
+        this.settings = settings;
     }
 
     @Override
@@ -54,17 +57,19 @@ public class IMPageDrawer extends PageDrawer {
             distY = distanceY(lastBBox, box);
         }
 
-        if (distX > 100) {
+        if (distX > settings.newlineX) {
             wholeText += '\n';
-        } else if (distX > 5) {
+        } else if (distX > settings.spaceX) {
             wholeText += ' ';
         }
 
         if (distX == 0 && distY == 0) {
             wholeBBox = box;
             wholeText += convertMac(code);
-        } else if (distY >= LINE_DISTANCE_THRESHOLD || (distX > 5 && distX < 50 && font != lastFont)) {
-            //drawRect(wholeBBox);
+        } else if (distY >= settings.paragraphSpacing || (distX > settings.columnMin && distX < settings.columnMax && font != lastFont)) {
+            if (settings.showBBoxes) {
+                drawRect(wholeBBox);
+            }
             blocks.add(new TextBlock(wholeBBox, wholeText));
             wholeText = convertMac(code);
             wholeBBox = box;
@@ -80,11 +85,14 @@ public class IMPageDrawer extends PageDrawer {
     public void processPage(PDPage page) throws IOException {
         super.processPage(page);
         if (wholeBBox != null) {
-            //drawRect(wholeBBox);
+            // the final one
+            if (settings.showBBoxes) {
+                drawRect(wholeBBox);
+            }
             blocks.add(new TextBlock(wholeBBox, wholeText));
         }
-        if (onPageCompleteListener != null) {
-            onPageCompleteListener.onPageComplete(blocks, getGraphics().getTransform());
+        if (pageListener != null) {
+            pageListener.onPageComplete(blocks, getGraphics().getTransform());
         }
     }
 
