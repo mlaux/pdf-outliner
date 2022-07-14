@@ -15,7 +15,7 @@ public class SettingsPanel implements ChangeListener {
     private JPanel panel;
 
     private SettingsChangeListener settingsChangeListener;
-    private static Settings settings = new Settings();
+    private static final Settings settings = new Settings();
 
     static class Settings {
         public int newlineX = 100;
@@ -28,6 +28,15 @@ public class SettingsPanel implements ChangeListener {
         private Settings() {
 
         }
+    }
+
+    public SettingsPanel() {
+        newlineX.addChangeListener(this);
+        spaceX.addChangeListener(this);
+        paragraphSpace.addChangeListener(this);
+        columnMin.addChangeListener(this);
+        columnMax.addChangeListener(this);
+        showBBoxes.addChangeListener(this);
     }
 
     public static Settings getSettings() {
@@ -44,15 +53,21 @@ public class SettingsPanel implements ChangeListener {
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (settingsChangeListener != null) {
-            settings.newlineX = newlineX.getValue();
-            settings.spaceX = spaceX.getValue();
-            settings.paragraphSpacing = paragraphSpace.getValue();
-            settings.columnMin = columnMin.getValue();
-            settings.columnMax = columnMax.getValue();
-            settings.showBBoxes = showBBoxes.isSelected();
-            settingsChangeListener.onSettingsChange(settings);
+        if (e.getSource() instanceof JSlider && ((JSlider) e.getSource()).getValueIsAdjusting()) {
+            return;
         }
+
+        if (settingsChangeListener == null) {
+            return;
+        }
+
+        settings.newlineX = newlineX.getValue();
+        settings.spaceX = spaceX.getValue();
+        settings.paragraphSpacing = paragraphSpace.getValue();
+        settings.columnMin = columnMin.getValue();
+        settings.columnMax = columnMax.getValue();
+        settings.showBBoxes = showBBoxes.isSelected();
+        settingsChangeListener.onSettingsChange(settings);
     }
 
     interface SettingsChangeListener {
